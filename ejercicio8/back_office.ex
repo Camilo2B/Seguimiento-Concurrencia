@@ -4,7 +4,7 @@ defmodule Backoffice do
 
     resultados =
       tareas
-      |> Enum.map(&Tareas.ejecutar/1)
+      |> Enum.map(&TareasBackoffice.ejecutar/1)
 
     total = System.monotonic_time(:millisecond) - tiempo_inicial
     {resultados, total}
@@ -15,7 +15,7 @@ defmodule Backoffice do
 
     resultados =
       tareas
-      |> Task.async_stream(&Tareas.ejecutar/1, timeout: :infinity)
+      |> Task.async_stream(&TareasBackoffice.ejecutar/1, timeout: :infinity)
       |> Enum.map(fn {:ok, r} -> r end)
 
     total = System.monotonic_time(:millisecond) - tiempo_inicial

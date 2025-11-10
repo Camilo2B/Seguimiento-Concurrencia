@@ -1,31 +1,28 @@
-defmodule Tareas do
-  # Simula ejecutar una tarea de mantenimiento
+defmodule TareasBackoffice do
+
   def ejecutar(:reindex) do
-    :timer.sleep(4000)
-    {:ok, "Reindex OK"}
+    :timer.sleep(3500)
+    {:ok, "El renderizado esta bien"}
   end
 
   def ejecutar(:purge_cache) do
-    :timer.sleep(2000)
-    {:ok, "Purge Cache OK"}
+    :timer.sleep(2900)
+    {:ok, "El cache anda nitido"}
   end
 
   def ejecutar(:build_sitemap) do
-    :timer.sleep(3000)
-    {:ok, "Sitemap OK"}
+    :timer.sleep(3333)
+    {:ok, "Construccion hecha"}
   end
 
-  def ejecutar(:clean_logs) do
-    :timer.sleep(1500)
-    {:ok, "Clean Logs OK"}
+  def ejecutar(:logistic_control) do
+    :timer.sleep(2390)
+    {:ok, "El control de la logistica fue un exito"}
   end
 
-  def ejecutar(:send_emails) do
-    :timer.sleep(2500)
-    {:ok, "Send Emails OK"}
-  end
-
-  def ejecutar(x) do
-    {:error, "Tarea desconocida: #{inspect(x)}"}
+  def ejercutar(:print_sheet) do
+    :timer.sleep(1200) do
+    {:ok, "las ojas se imprimeron con exito"}
+    end
   end
 end
