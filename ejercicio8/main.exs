@@ -1,5 +1,5 @@
 defmodule Main do
-  def run(8) do
+  def run(6) do
     Benchmark.medir()
   end
 
@@ -8,4 +8,4 @@ defmodule Main do
   end
 end
 
-Main.run(8)
+Main.run(6)
