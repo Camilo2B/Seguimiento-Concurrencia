@@ -1,21 +1,36 @@
-defmodule SucursalesApp do
-  alias ProcesadorReportes
-  alias Benchmark
+Code.require_file("sucursal.ex", _DIR_)
 
-  def correr(sucursales) do
-    t1 = Benchmark.tiempo({ProcesadorReportes, :procesar_secuencial, [sucursales]})
-    t2 = Benchmark.tiempo({ProcesadorReportes, :procesar_concurrente, [sucursales]})
+defmodule Main do
+  def main() do
+    sucursales = [
+      Sucursal.crear(1, [100, 200, 300]),
+      Sucursal.crear(2, [150, 250, 350]),
+      Sucursal.crear(3, [200, 300, 400])
+    ]
 
-    IO.puts Benchmark.mensaje(t1, t2)
+    proceso_secuencial(sucursales)
+    proceso_concurrente(sucursales)
+  end
+
+  defp proceso_secuencial(sucursales) do
+    IO.puts("\n--- PROCESO SECUENCIAL ---")
+    Enum.each(sucursales, fn s ->
+      total = Sucursal.total_ventas(s)
+      IO.puts("Sucursal #{s.id}: total de ventas = #{total}")
+    end)
+  end
+
+  defp proceso_concurrente(sucursales) do
+    IO.puts("\n--- PROCESO CONCURRENTE ---")
+    tareas = Enum.map(sucursales, fn s ->
+      Task.async(fn -> {s.id, Sucursal.total_ventas(s)} end)
+    end)
+
+    Task.await_many(tareas)
+    |> Enum.each(fn {id, total} ->
+      IO.puts("Sucursal #{id}: total de ventas = #{total}")
+    end)
   end
 end
 
-sucursales = [
-  Sucursal.crear(1, [100, 200, 150, 80]),
-  Sucursal.crear(2, [120, 180, 90, 160]),
-  Sucursal.crear(3, [300, 250, 100, 120]),
-  Sucursal.crear(4, [80, 60, 110, 95]),
-  Sucursal.crear(5, [200, 210, 190, 220])
-]
-
-SucursalesApp.correr(sucursales)
+Main.main()

@@ -2,7 +2,7 @@ defmodule NodoServidor do
   @nombre_servicio_local :servicio_cadenas
 
   def main() do
-    Util.mostrar_mensaje("PROCESO SECUNDARIO")
+    IO.puts("PROCESO SECUNDARIO")
     registrar_servicio(@nombre_servicio_local)
     procesar_mensajes()
   end
@@ -22,10 +22,41 @@ defmodule NodoServidor do
   end
 
   defp procesar_mensaje(:fin), do: :fin
-  defp procesar_mensaje({:mayusculas, msg}), do: String.upcase(msg)
-  defp procesar_mensaje({:minusculas, msg}), do: String.downcase(msg)
-  defp procesar_mensaje({funcion, msg}) when is_function(funcion, 1), do: funcion.(msg)
-  defp procesar_mensaje(mensaje), do: "El mensaje \"#{mensaje}\" es desconocido."
+
+  defp procesar_mensaje(%Usuario{correo: correo, edad: edad, nombre: nombre}) do
+
+    :timer.sleep(Enum.random(3..10))
+
+    errores = []
+
+    errores =
+      if String.contains?(correo, "@"), do: errores, else: ["Email inválido" | errores]
+
+    errores =
+      if edad >= 0, do: errores, else: ["Edad inválida" | errores]
+
+    errores =
+      if String.trim(nombre) != "", do: errores, else: ["Nombre vacío" | errores]
+
+    if errores == [] do
+      {correo, :ok}
+    else
+      {correo, {:error, Enum.reverse(errores)}}
+    end
+  end
+
+  defp procesar_mensaje(lista_usuarios) do
+    Enum.map(lista_usuarios, &procesar_mensaje/1)
+  end
+
+  defp procesar_concurrente(lista_usuarios) do
+    lista_usuarios
+    |> Task.async_stream(&procesar_mensaje/1,
+      max_concurrency: System.schedulers_online(),
+      timeout: :infinity
+    )
+    |> Enum.map(fn {:ok, resultado} -> resultado end)
+  end
 end
 
 NodoServidor.main()

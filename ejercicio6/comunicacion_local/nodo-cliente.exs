@@ -6,17 +6,26 @@ defmodule NodoCliente do
   @servicio_remoto {:servicio_cadenas, @nodo_remoto}
 
   # Lista de mensajes a procesar
-  @mensajes [
-    {:mayusculas, "Juan"},
-    {:mayusculas, "Ana"},
-    {:minusculas, "Diana"},
-    {&String.reverse/1, "Julián"},
-    "Uniquindio",
-    :fin
-  ]
+ @mensajes = [
+      %Usuario{correo: "juanVelez@gmail.com", edad: 40, nombre: "Juan Velez"},
+      %Usuario{correo: "mariaDelMarBaena@gmail.com", edad: 21, nombre: "Maria Del Mar"},
+      %Usuario{correo: "correo-malo.com", edad: 11, nombre: "Jefferson"},
+      %Usuario{correo: "anaTorres@gmail.com", edad: -14, nombre: "Ana"},
+     %Usuario{correo: "JeisonJaramillo@gmail.com", edad: 42, nombre: ""},
+      %Usuario{correo: "JMendez@", edad: 33, nombre: "Jaime Mendez"},
+     %Usuario{correo: "LauraSofiaM@gmail.com", edad: 20, nombre: "Laura Sofia"},
+     %Usuario{correo: "JonathanJosean@yahoo.com", edad: 60, nombre: "JoJo"},
+      %Usuario{correo: "   @example.com", edad: 22, nombre: "Johannes"},
+     %Usuario{correo: "LinaMaria@gmail.com", edad: 53, nombre: " "},
+      %Usuario{correo: "nestor@example.com", edad: 13, nombre: "nestor"},
+    %Usuario{correo: "mauricio@example.com", edad: 101, nombre: "mauricio"},
+     %Usuario{correo: "MarcelaArroyave.com", edad: 25, nombre: "Marcela"},
+     %Usuario{correo: "JhanSneider@mail.com", edad: 21, nombre: "JhanSneider"},
+     %Usuario{correo: "ArthurMorgan@gmail.com", edad: 44, nombre: "Arthur"},
+    ]
 
   def main() do
-    Util.mostrar_mensaje("PROCESO PRINCIPAL")
+    IO.puts("PROCESO PRINCIPAL")
 
     @nombre_servicio_local
     |> registrar_servicio()
@@ -33,7 +42,7 @@ defmodule NodoCliente do
   end
 
   defp iniciar_produccion(false),
-    do: Util.mostrar_error("No se pudo conectar con el nodo servidor")
+    do: IO.puts("No se pudo conectar con el nodo servidor")
 
   defp iniciar_produccion(true) do
     enviar_mensajes()
@@ -54,7 +63,7 @@ defmodule NodoCliente do
         :ok
 
       respuesta ->
-        Util.mostrar_mensaje("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{respuesta}\"")
         recibir_respuestas()
     end
   end
