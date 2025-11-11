@@ -49,7 +49,7 @@ defmodule NodoServidor do
     Enum.map(lista_usuarios, &procesar_mensaje/1)
   end
 
-  defp procesar_concurrente(lista_usuarios) do
+  defp procesar_mensaje(lista_usuarios) do
     lista_usuarios
     |> Task.async_stream(&procesar_mensaje/1,
       max_concurrency: System.schedulers_online(),

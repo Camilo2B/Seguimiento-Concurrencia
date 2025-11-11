@@ -1,17 +1,16 @@
 defmodule NodoCliente do
 
   @nodo_cliente :"cliente@192.168.137.239"
-  @nodo_servidor :"servidor@192.168.137.1"
+  @nodo_servidor :"servidor@192.168.137.239"
   @nombre_proceso :servicio_cadenas
 
-  # Lista de mensajes a procesar
   @mensajes [
-    {:mayusculas, "Juan"},
-    {:mayusculas, "Ana"},
-    {:minusculas, "Diana"},
-    {&String.reverse/1, "Julián"},
-    "Uniquindio", :fin
-  ]
+      %Tarea{:reindex, "Reindexar base de datos", :alta, 1500},
+      %Tarea{:purge_cache, "Limpiar caché del sistema", :alta, 800},
+      %Tarea{:build_sitemap, "Generar sitemap.xml", :media, 1200},
+      %Tarea{:cleanup_logs, "Limpiar logs antiguos", :baja, 600},
+      %Tarea{:backup_db, "Backup de base de datos", :alta, 2000}
+    ]
 
   def main() do
     IO.puts("SE INICIA EL CLIENTE")

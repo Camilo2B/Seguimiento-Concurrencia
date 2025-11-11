@@ -5,7 +5,6 @@ defmodule NodoCliente do
   @nodo_remoto :nodoservidor@localhost
   @servicio_remoto {:servicio_cadenas, @nodo_remoto}
 
-  # Lista de mensajes a procesar
  @mensajes = [
       %Usuario{correo: "juanVelez@gmail.com", edad: 40, nombre: "Juan Velez"},
       %Usuario{correo: "mariaDelMarBaena@gmail.com", edad: 21, nombre: "Maria Del Mar"},

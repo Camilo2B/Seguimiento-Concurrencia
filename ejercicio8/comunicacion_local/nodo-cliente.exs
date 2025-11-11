@@ -5,18 +5,16 @@ defmodule NodoCliente do
   @nodo_remoto :nodoservidor@localhost
   @servicio_remoto {:servicio_cadenas, @nodo_remoto}
 
-  # Lista de mensajes a procesar
   @mensajes [
-    {:mayusculas, "Juan"},
-    {:mayusculas, "Ana"},
-    {:minusculas, "Diana"},
-    {&String.reverse/1, "Julián"},
-    "Uniquindio",
-    :fin
-  ]
+      %Tarea{:reindex, "Reindexar base de datos", :alta, 1500},
+      %Tarea{:purge_cache, "Limpiar caché del sistema", :alta, 800},
+      %Tarea{:build_sitemap, "Generar sitemap.xml", :media, 1200},
+      %Tarea{:cleanup_logs, "Limpiar logs antiguos", :baja, 600},
+      %Tarea{:backup_db, "Backup de base de datos", :alta, 2000}
+    ]
 
   def main() do
-    Util.mostrar_mensaje("PROCESO PRINCIPAL")
+    IO.puts("PROCESO PRINCIPAL")
 
     @nombre_servicio_local
     |> registrar_servicio()
@@ -33,7 +31,7 @@ defmodule NodoCliente do
   end
 
   defp iniciar_produccion(false),
-    do: Util.mostrar_error("No se pudo conectar con el nodo servidor")
+    do: IO.puts("No se pudo conectar con el nodo servidor")
 
   defp iniciar_produccion(true) do
     enviar_mensajes()
@@ -54,7 +52,7 @@ defmodule NodoCliente do
         :ok
 
       respuesta ->
-        Util.mostrar_mensaje("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{respuesta}\"")
         recibir_respuestas()
     end
   end

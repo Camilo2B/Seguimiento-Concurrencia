@@ -1,6 +1,6 @@
 defmodule NodoServidor do
 
-  @nodo_servidor :"servidor@192.168.137.1"
+  @nodo_servidor :"servidor@192.168.137.239"
   @nombre_proceso :servicio_cadenas
 
   def main() do
@@ -29,10 +29,59 @@ defmodule NodoServidor do
     end
   end
 
-  defp procesar_mensaje({:mayusculas, msg}), do: String.upcase(msg)
-  defp procesar_mensaje({:minusculas, msg}), do: String.downcase(msg)
-  defp procesar_mensaje({funcion, msg}) when is_function(funcion, 1), do: funcion.(msg)
-  defp procesar_mensaje(mensaje), do: "El mensaje \"#{mensaje}\" es desconocido."
+  defp procesar_mensaje(tarea) do
+    IO.puts("⏳ Iniciando: #{tarea.nombre} - #{tarea.descripcion}")
+    IO.puts("   Prioridad: #{tarea.prioridad} | Estimado: #{tarea.duracion_estimada}ms")
+
+    inicio = System.monotonic_time(:millisecond)
+    tarea_actualizada = %{tarea | estado: :ejecutando}
+
+    # Simulación con variación del 80%-120% del tiempo estimado
+    tiempo_real = round(tarea.duracion_estimada * Enum.random(80..120) / 100)
+    Process.sleep(tiempo_real)
+
+    fin = System.monotonic_time(:millisecond)
+    tiempo_ejecucion = fin - inicio
+
+    IO.puts("✓ OK tarea: #{tarea.nombre} (#{tiempo_ejecucion}ms)\n")
+
+    %{tarea_actualizada |
+      estado: :completada,
+      resultado: :ok,
+      tiempo_real: tiempo_ejecucion
+    }
+  end
+
+  defp procesar_mensaje(tareas) do
+    IO.puts("📋 Tareas a ejecutar:")
+    Enum.each(tareas, fn tarea ->
+      IO.puts("   • #{tarea.nombre} [#{tarea.prioridad}] - #{tarea.descripcion}")
+    end)
+    IO.puts("")
+  end
+
+  def procesar_mensaje(tareas \\ Tarea.tareas_default()) do
+    IO.puts("\n=== Ejecución CONCURRENTE con Structs ===\n")
+
+    mostrar_tareas(tareas)
+
+    inicio = System.monotonic_time(:millisecond)
+    parent = self()
+
+    Enum.each(tareas, fn tarea ->
+      spawn(fn -> ejecutar_tarea(tarea, parent) end)
+    end)
+
+    tareas_completadas = recibir_resultados(length(tareas), [])
+
+    fin = System.monotonic_time(:millisecond)
+    tiempo_total = fin - inicio
+
+    mostrar_resumen(tareas_completadas, tiempo_total)
+
+    {:ok, tareas_completadas, tiempo_total}
+  end
+
 end
 
 NodoServidor.main()

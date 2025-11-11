@@ -1,34 +1,39 @@
-defmodule Main do
-  def run(lote) do
-    t1 = Benchmark.tiempo({Procesador, :procesar_secuencial, [lote]})
-    t2 = Benchmark.tiempo({Procesador, :procesar_concurrente, [lote]})
+Code.require_file("tpl.ex", _DIR_)
 
-    IO.inspect(t2 |> elem(1), label: "Resultados")
-    IO.puts Benchmark.mensaje(t1, t2)
+defmodule Main do
+  def main() do
+    plantillas = [
+      Tpl.crear_tpl(1, "Hola {{nombre}}, tu pedido #{{id_pedido}} está listo.", %{nombre: "Ana", id_pedido: 123}),
+      Tpl.crear_tpl(2, "Estimado {{cliente}}, su total es ${{total}}.", %{cliente: "Carlos", total: 45.99}),
+      Tpl.crear_tpl(3, "Gracias {{usuario}} por registrarte en {{app}}.", %{usuario: "Sofía", app: "MiApp"}),
+      Tpl.crear_tpl(4, "Hola {{nombre}}, recuerda tu cita el {{fecha}}.", %{nombre: "Luis", fecha: "10/11/2025"})
+    ]
+
+    proceso_secuencial(plantillas)
+    proceso_concurrente(plantillas)
+  end
+
+  # --- SECUENCIAL ---
+  defp proceso_secuencial(plantillas) do
+    IO.puts("\n--- RENDER SECUENCIAL ---")
+    Enum.each(plantillas, fn tpl ->
+      renderizado = Tpl.render(tpl)
+      IO.puts("Plantilla #{tpl.id}: #{renderizado}")
+    end)
+  end
+
+  # --- CONCURRENTE ---
+  defp proceso_concurrente(plantillas) do
+    IO.puts("\n--- RENDER CONCURRENTE ---")
+    tareas = Enum.map(plantillas, fn tpl ->
+      Task.async(fn -> {tpl.id, Tpl.render(tpl)} end)
+    end)
+
+    Task.await_many(tareas)
+    |> Enum.each(fn {id, renderizado} ->
+      IO.puts("Plantilla #{id}: #{renderizado}")
+    end)
   end
 end
 
-lote = [
-  %Tpl{
-    id: 1,
-    nombre: "Hola {{user}}, tu pedido {{id}} está listo.",
-    vars: %{user: "Juan", id: 991}
-  },
-  %Tpl{
-    id: 2,
-    nombre: "<p>Estimado {{user}}, su saldo es {{saldo}} COP</p>",
-    vars: %{user: "Maria", saldo: 120_000}
-  },
-  %Tpl{
-    id: 3,
-    nombre: """
-    <div>
-      <h1>Hola {{user}}</h1>
-      <p>Gracias por registrarte. Tu código es {{codigo}}</p>
-    </div>
-    """,
-    vars: %{user: "Carlos", codigo: "A9F21"}
-  }
-]
-
-Main.run(lote)
+Main.main()
