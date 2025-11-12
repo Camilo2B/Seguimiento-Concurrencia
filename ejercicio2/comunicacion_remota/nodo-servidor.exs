@@ -1,3 +1,17 @@
+defmodule Producto do
+  defstruct [:nombre, :stock, :precio_sin_iva, :iva]
+
+  def crear(nombre, stock, precio_sin_iva, iva) do
+    %Producto{
+      nombre: nombre,
+      stock: stock,
+      precio_sin_iva: precio_sin_iva,
+      iva: iva
+    }
+  end
+end
+
+
 defmodule NodoServidor do
 
   @nodo_servidor :"servidor@192.168.137.1"
@@ -44,15 +58,6 @@ defmodule NodoServidor do
     |> Enum.sort_by(fn {_nombre, precio} -> precio end)
   end
 
-  defp procesar_mensaje(productos) do
-
-    Enum.map(productos, fn producto ->
-
-    Task.async(fn -> procesar_mensaje(producto) end)
-    end)
-    |> Task.await_many()
-    |> Enum.sort_by(fn {_nombre, precio} -> precio end)
-  end
 end
 
 NodoServidor.main()

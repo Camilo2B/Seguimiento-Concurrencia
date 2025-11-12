@@ -1,3 +1,16 @@
+defmodule Car do
+  defstruct [:id, :piloto, :pit_ms, :vuelta_ms]
+
+  def crear(piloto, vuelta_ms, pit_ms) do
+    %Car{
+      piloto: piloto,
+      vuelta_ms: vuelta_ms,
+      pit_ms: pit_ms
+    }
+  end
+end
+
+
 defmodule NodoCliente do
 
   @nodo_cliente :"cliente@192.168.137.239"
@@ -46,7 +59,7 @@ defmodule NodoCliente do
     receive do
       :fin -> :ok
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end

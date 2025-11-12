@@ -1,7 +1,21 @@
+defmodule Car do
+  defstruct [:id, :piloto, :pit_ms, :vuelta_ms]
+
+  def crear(piloto, vuelta_ms, pit_ms) do
+    %Car{
+      piloto: piloto,
+      vuelta_ms: vuelta_ms,
+      pit_ms: pit_ms
+    }
+  end
+end
+
 defmodule NodoServidor do
 
   @nodo_servidor :"servidor@192.168.137.239"
   @nombre_proceso :servicio_cadenas
+  @vueltas 5  # Definir el número de vueltas
+
 
   def main() do
     IO.puts("SE INICIA EL SERVIDOR")
@@ -29,7 +43,7 @@ defmodule NodoServidor do
     end
   end
 
- defp procesar_mensaje(%Car{piloto: piloto, vuelta_ms: vms, pit_ms: pms}) do
+  defp procesar_mensaje(%Car{piloto: piloto, vuelta_ms: vms, pit_ms: pms}) do
     total =
       Enum.reduce(1..@vueltas, 0, fn _, acc ->
         :timer.sleep(vms)
@@ -40,7 +54,6 @@ defmodule NodoServidor do
     IO.puts("#{piloto} terminó con #{total_total} ms.")
     {piloto, total_total}
   end
-
 end
 
 NodoServidor.main()

@@ -1,10 +1,23 @@
+defmodule Usuario do
+  defstruct correo: "", edad: 0, nombre: ""
+
+  def crear(correo, edad, nombre) do
+    %Usuario{
+      correo: correo,
+      edad: edad,
+      nombre: nombre
+    }
+  end
+end
+
+
 defmodule NodoCliente do
 
   @nodo_cliente :"cliente@192.168.137.239"
   @nodo_servidor :"servidor@192.168.137.239"
   @nombre_proceso :servicio_cadenas
 
- @mensajes = [
+ @mensajes  [
       %Usuario{correo: "juanVelez@gmail.com", edad: 40, nombre: "Juan Velez"},
       %Usuario{correo: "mariaDelMarBaena@gmail.com", edad: 21, nombre: "Maria Del Mar"},
       %Usuario{correo: "correo-malo.com", edad: 11, nombre: "Jefferson"},
@@ -57,7 +70,7 @@ defmodule NodoCliente do
     receive do
       :fin -> :ok
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end

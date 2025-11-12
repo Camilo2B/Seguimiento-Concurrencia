@@ -1,10 +1,4 @@
-defmodule NodoCliente do
-
-  @nombre_servicio_local :servicio_respuesta
-  @servicio_local {@nombre_servicio_local, :nodocliente@cliente}
-  @nodo_remoto :nodoservidor@localhost
-  @servicio_remoto {:servicio_cadenas, @nodo_remoto}
-
+defmodule Review do
   defstruct id: 0, texto: ""
 
   def crear(id, texto) do
@@ -26,6 +20,15 @@ defmodule NodoCliente do
     :timer.sleep(Enum.random(5..15))
     {review.id, texto_limpio}
   end
+end
+
+defmodule NodoCliente do
+
+  @nombre_servicio_local :servicio_respuesta
+  @servicio_local {@nombre_servicio_local, :nodocliente@cliente}
+  @nodo_remoto :nodoservidor@localhost
+  @servicio_remoto {:servicio_cadenas, @nodo_remoto}
+
 
   @mensajes [
       Review.crear(1, "Excelente atención!"),
@@ -75,7 +78,7 @@ defmodule NodoCliente do
         :ok
 
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end

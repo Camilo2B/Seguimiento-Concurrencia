@@ -63,7 +63,7 @@ defmodule NodoCliente do
         :ok
 
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end

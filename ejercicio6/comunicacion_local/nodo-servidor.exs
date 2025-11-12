@@ -1,3 +1,16 @@
+defmodule Usuario do
+  defstruct correo: "", edad: 0, nombre: ""
+
+  def crear(correo, edad, nombre) do
+    %Usuario{
+      correo: correo,
+      edad: edad,
+      nombre: nombre
+    }
+  end
+end
+
+
 defmodule NodoServidor do
   @nombre_servicio_local :servicio_cadenas
 
@@ -16,7 +29,6 @@ defmodule NodoServidor do
         respuesta = procesar_mensaje(mensaje)
         send(productor, respuesta)
 
-        # Llama recursivamente para seguir recibiendo mensajes
         if respuesta != :fin, do: procesar_mensajes()
     end
   end

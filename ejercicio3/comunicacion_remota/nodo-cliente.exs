@@ -1,9 +1,4 @@
-defmodule NodoCliente do
-
-  @nodo_cliente :"cliente@192.168.137.239"
-  @nodo_servidor :"servidor@192.168.137.239"
-  @nombre_proceso :servicio_cadenas
-
+defmodule Orden do
   defstruct id: 0, item: "", prep_ms: 0
 
   def crear_orden(id, item, prep_ms) do
@@ -14,6 +9,14 @@ defmodule NodoCliente do
     :timer.sleep(orden.prep_ms)
     "Ticket listo para #{orden.item}"
   end
+end
+
+
+defmodule NodoCliente do
+
+  @nodo_cliente :"cliente@192.168.137.239"
+  @nodo_servidor :"servidor@192.168.137.239"
+  @nombre_proceso :servicio_cadenas
 
   @mensajes [
       Orden.crear_orden(1, "Capuchino", 300),
@@ -22,7 +25,7 @@ defmodule NodoCliente do
       Orden.crear_orden(4, "Jugo de naranja", 350),
       Orden.crear_orden(5, "Croissant", 500)
   ]
-  
+
   def main() do
     IO.puts("SE INICIA EL CLIENTE")
     iniciar_nodo(@nodo_cliente)
@@ -58,7 +61,7 @@ defmodule NodoCliente do
     receive do
       :fin -> :ok
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end

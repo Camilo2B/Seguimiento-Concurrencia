@@ -1,3 +1,17 @@
+defmodule Producto do
+  defstruct [:nombre, :stock, :precio_sin_iva, :iva]
+
+  def crear(nombre, stock, precio_sin_iva, iva) do
+    %Producto{
+      nombre: nombre,
+      stock: stock,
+      precio_sin_iva: precio_sin_iva,
+      iva: iva
+    }
+  end
+end
+
+
 defmodule NodoCliente do
 
   @nodo_cliente :"cliente@192.168.137.239"
@@ -63,7 +77,7 @@ defmodule NodoCliente do
     receive do
       :fin -> :ok
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end

@@ -1,17 +1,11 @@
 defmodule NodoCliente do
-
   @nombre_servicio_local :servicio_respuesta
   @servicio_local {@nombre_servicio_local, :nodocliente@cliente}
   @nodo_remoto :nodoservidor@localhost
   @servicio_remoto {:servicio_cadenas, @nodo_remoto}
 
-  @mensajes [
-      %Tarea{:reindex, "Reindexar base de datos", :alta, 1500},
-      %Tarea{:purge_cache, "Limpiar caché del sistema", :alta, 800},
-      %Tarea{:build_sitemap, "Generar sitemap.xml", :media, 1200},
-      %Tarea{:cleanup_logs, "Limpiar logs antiguos", :baja, 600},
-      %Tarea{:backup_db, "Backup de base de datos", :alta, 2000}
-    ]
+  # ✅ IMPORTANTE: Usa Tarea.tareas_default() que devuelve structs
+  @mensajes Tarea.tareas_default()
 
   def main() do
     IO.puts("PROCESO PRINCIPAL")
@@ -38,9 +32,15 @@ defmodule NodoCliente do
     recibir_respuestas()
   end
 
+  # Opción 1: Enviar una tarea a la vez
   defp enviar_mensajes() do
     Enum.each(@mensajes, &enviar_mensaje/1)
   end
+
+  # Opción 2: Enviar todas las tareas juntas (descomenta si prefieres esto)
+  # defp enviar_mensajes() do
+  #   send(@servicio_remoto, {@servicio_local, @mensajes})
+  # end
 
   defp enviar_mensaje(mensaje) do
     send(@servicio_remoto, {@servicio_local, mensaje})
@@ -52,7 +52,7 @@ defmodule NodoCliente do
         :ok
 
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> #{inspect(respuesta)}")
         recibir_respuestas()
     end
   end

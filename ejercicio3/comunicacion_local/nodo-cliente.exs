@@ -1,10 +1,4 @@
-defmodule NodoCliente do
-
-  @nombre_servicio_local :servicio_respuesta
-  @servicio_local {@nombre_servicio_local, :nodocliente@cliente}
-  @nodo_remoto :nodoservidor@localhost
-  @servicio_remoto {:servicio_cadenas, @nodo_remoto}
-
+defmodule Orden do
   defstruct id: 0, item: "", prep_ms: 0
 
   def crear_orden(id, item, prep_ms) do
@@ -15,7 +9,16 @@ defmodule NodoCliente do
     :timer.sleep(orden.prep_ms)
     "Ticket listo para #{orden.item}"
   end
-  
+end
+
+
+defmodule NodoCliente do
+
+  @nombre_servicio_local :servicio_respuesta
+  @servicio_local {@nombre_servicio_local, :nodocliente@cliente}
+  @nodo_remoto :nodoservidor@localhost
+  @servicio_remoto {:servicio_cadenas, @nodo_remoto}
+
   @mensajes [
       Orden.crear_orden(1, "Capuchino", 300),
       Orden.crear_orden(2, "Latte", 400),
@@ -63,7 +66,7 @@ defmodule NodoCliente do
         :ok
 
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end

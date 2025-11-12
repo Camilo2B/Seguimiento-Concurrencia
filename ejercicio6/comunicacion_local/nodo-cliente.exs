@@ -1,3 +1,15 @@
+defmodule Usuario do
+  defstruct correo: "", edad: 0, nombre: ""
+
+  def crear(correo, edad, nombre) do
+    %Usuario{
+      correo: correo,
+      edad: edad,
+      nombre: nombre
+    }
+  end
+end
+
 defmodule NodoCliente do
 
   @nombre_servicio_local :servicio_respuesta
@@ -5,7 +17,7 @@ defmodule NodoCliente do
   @nodo_remoto :nodoservidor@localhost
   @servicio_remoto {:servicio_cadenas, @nodo_remoto}
 
- @mensajes = [
+ @mensajes [
       %Usuario{correo: "juanVelez@gmail.com", edad: 40, nombre: "Juan Velez"},
       %Usuario{correo: "mariaDelMarBaena@gmail.com", edad: 21, nombre: "Maria Del Mar"},
       %Usuario{correo: "correo-malo.com", edad: 11, nombre: "Jefferson"},
@@ -62,7 +74,7 @@ defmodule NodoCliente do
         :ok
 
       respuesta ->
-        IO.puts("\t -> \"#{respuesta}\"")
+        IO.puts("\t -> \"#{inspect(respuesta)}\"")
         recibir_respuestas()
     end
   end
