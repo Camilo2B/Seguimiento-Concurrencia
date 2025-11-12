@@ -1,5 +1,3 @@
-Code.require_file("orden.ex", _DIR_)
-
 defmodule Main do
   def main() do
     ordenes = [

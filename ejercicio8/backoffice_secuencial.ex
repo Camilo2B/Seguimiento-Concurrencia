@@ -1,8 +1,5 @@
-# backoffice_secuencial_struct.ex
 defmodule BackofficeSecuencial do
-  @moduledoc """
-  Ejecución SECUENCIAL de tareas con structs.
-  """
+
 
   def run(tareas \\ Tarea.tareas_default()) do
     IO.puts("\n=== Ejecución SECUENCIAL con Structs ===\n")

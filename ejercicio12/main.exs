@@ -1,9 +1,7 @@
-Code.require_file("tpl.ex", _DIR_)
-
 defmodule Main do
   def main() do
     plantillas = [
-      Tpl.crear_tpl(1, "Hola {{nombre}}, tu pedido #{{id_pedido}} está listo.", %{nombre: "Ana", id_pedido: 123}),
+      Tpl.crear_tpl(1, "Hola {{nombre}}, tu pedido está listo.", %{nombre: "Ana", id: 123}),
       Tpl.crear_tpl(2, "Estimado {{cliente}}, su total es ${{total}}.", %{cliente: "Carlos", total: 45.99}),
       Tpl.crear_tpl(3, "Gracias {{usuario}} por registrarte en {{app}}.", %{usuario: "Sofía", app: "MiApp"}),
       Tpl.crear_tpl(4, "Hola {{nombre}}, recuerda tu cita el {{fecha}}.", %{nombre: "Luis", fecha: "10/11/2025"})

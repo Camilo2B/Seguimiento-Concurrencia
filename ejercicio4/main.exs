@@ -1,4 +1,3 @@
-Code.require_file("review.ex", _DIR_)
 
 defmodule Main do
   def main() do

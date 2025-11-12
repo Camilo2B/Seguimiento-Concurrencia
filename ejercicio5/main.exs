@@ -1,5 +1,3 @@
-Code.require_file("sucursal.ex", _DIR_)
-
 defmodule Main do
   def main() do
     sucursales = [

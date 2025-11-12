@@ -1,5 +1,19 @@
+# Definir Car como módulo separado
+defmodule Car do
+  defstruct [:id, :piloto, :pit_ms, :vuelta_ms]
+
+  def crear(piloto, vuelta_ms, pit_ms) do
+    %Car{
+      piloto: piloto,
+      vuelta_ms: vuelta_ms,
+      pit_ms: pit_ms
+    }
+  end
+end
+
 defmodule NodoServidor do
   @nombre_servicio_local :servicio_cadenas
+  @vueltas 5  # Definir el número de vueltas
 
   def main() do
     IO.puts("PROCESO SECUNDARIO")
@@ -22,7 +36,7 @@ defmodule NodoServidor do
 
   defp procesar_mensaje(:fin), do: :fin
 
- defp procesar_mensaje(%Car{piloto: piloto, vuelta_ms: vms, pit_ms: pms}) do
+  defp procesar_mensaje(%Car{piloto: piloto, vuelta_ms: vms, pit_ms: pms}) do
     total =
       Enum.reduce(1..@vueltas, 0, fn _, acc ->
         :timer.sleep(vms)
@@ -36,3 +50,5 @@ defmodule NodoServidor do
 end
 
 NodoServidor.main()
+
+
